@@ -1,6 +1,5 @@
 package tests;
 
-import constants.IConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
