@@ -13,7 +13,7 @@ public class CheckoutPage extends CartPage{
         super(driver);
     }
 
-    public void checkoutInformation(String firstName, String lastName){
+    public void postalInformationCompletion(String firstName, String lastName){
         driver.findElement(FIRSTNAME_INPUT).sendKeys(firstName);
         driver.findElement(LASTNAME_INPUT).sendKeys(lastName);
         driver.findElement(ZIP_CODE).sendKeys("12345");
