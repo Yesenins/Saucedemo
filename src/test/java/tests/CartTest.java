@@ -9,25 +9,22 @@ import java.util.List;
 
 public class CartTest extends BaseTest{
 
-    @Test(description = "smoke test: Check that the shopping cart link is active")
-    public void shoppingCartLinkTest(){
+    @Test(description = "Check opening shopping cart")
+    public void checkOpeningChoppingCartTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME, PASSWORD);
         headerPage.clickCartButton();
-        Assert.assertEquals(driver.getCurrentUrl(),CART_PAGE_URL);
+        Assert.assertEquals(driver.getCurrentUrl(), CART_PAGE_URL);
     }
 
     @Test(description = "Check that all added items are displayed in the cart ")
     public void displayAllAddGoodsTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME, PASSWORD);
-        List<WebElement> ALL_GOODS = productsPage.getAllGoods();
-        for (WebElement button :ALL_GOODS){
-            button.findElement(By.xpath("//*[contains(text(),'Add to cart')]")).click();
-        }
+        productsPage.addToCartAllProducts();
         headerPage.clickCartButton();
-        int quantityOfAllGoods = cartPage.getAllGoodsInShoppingCart().size();
-        Assert.assertEquals(6,quantityOfAllGoods);
+        int quantityOfAllGoods = cartPage.getQuantityOfAllGoods();
+        Assert.assertEquals(6, quantityOfAllGoods);
 //        Assert.assertEquals(driver.findElement(By.cssSelector(".shopping_cart_badge")).getText(),String.valueOf(quantityOfAllGoods));
     }
 
@@ -35,38 +32,38 @@ public class CartTest extends BaseTest{
     public void displayTheNumberOfGoodsOnCartIconAddTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME, PASSWORD);
-        driver.findElement(By.id("add-to-cart-sauce-labs-onesie")).click();
-        driver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
-        Assert.assertEquals(driver.findElement(By.cssSelector(".shopping_cart_badge")).getText(),"2");
+        productsPage.addProductToCart(SAUCE_LABS_ONESIE);
+        productsPage.addProductToCart(SAUCE_LABS_BOLT_T_SHIRT);
+        Assert.assertEquals(headerPage.getTextFromIcon(),"2");
     }
 
     @Test(description = "Check that the cart icon displays the correct number of items after adding and removing items")
     public void displayTheNumberOfGoodsOnCartIconRemoveTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME, PASSWORD);
-        driver.findElement(By.id("add-to-cart-sauce-labs-onesie")).click();
+        productsPage.addProductToCart(SAUCE_LABS_FLEECE_JACKET);
         headerPage.clickCartButton();
         cartPage.continueShoppingButton();
-        driver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
-        driver.findElement(By.id("add-to-cart-sauce-labs-fleece-jacket")).click();
+        productsPage.addProductToCart(SAUCE_LABS_BACKPACK);
+        productsPage.addProductToCart(TEST_ALL_THE_THINGS_T_SHIRT_RED);
         headerPage.clickCartButton();
         cartPage.removeButton();
         cartPage.removeButton();
-        Assert.assertEquals(driver.findElement(By.cssSelector(".shopping_cart_badge")).getText(),"1");
+        Assert.assertEquals(headerPage.getTextFromIcon(),"1");
     }
 
     @Test(description = "Check that the item can be removed from the cart and it disappears after removal")
     public void displayRemoveGoodsTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME, PASSWORD);
-        driver.findElement(By.id("add-to-cart-sauce-labs-onesie")).click();
-        driver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
-        driver.findElement(By.id("add-to-cart-sauce-labs-fleece-jacket")).click();
+        productsPage.addProductToCart(SAUCE_LABS_ONESIE);
+        productsPage.addProductToCart(SAUCE_LABS_BIKE_LIGHT);
+        productsPage.addProductToCart(SAUCE_LABS_FLEECE_JACKET);
         headerPage.clickCartButton();
         driver.findElement(By.id("remove-sauce-labs-bike-light")).click();
-        List<WebElement> ALL_GOODS_IN_CART = cartPage.getAllGoodsInShoppingCart();
-        for (WebElement item : ALL_GOODS_IN_CART){
-            Assert.assertFalse(item.findElement(By.cssSelector(".inventory_item_name")).getText().contains(SAUCE_LABS_BIKE_LIGHT));
+        List<String> productsListInCart = cartPage.getNamesProductsInShoppingCart();
+        for (String item : productsListInCart){
+            Assert.assertFalse(item.contains(SAUCE_LABS_BIKE_LIGHT));
         }
     }
 
@@ -74,26 +71,18 @@ public class CartTest extends BaseTest{
     public void displayNameOfGoodsTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME, PASSWORD);
-        List<WebElement> ALL_GOODS = productsPage.getAllGoods();
-        List<String> ALL_GOODS_NAMES = new ArrayList<>();
-        for (WebElement button :ALL_GOODS){
-            button.findElement(By.xpath("//*[contains(text(),'Add to cart')]")).click();
-            ALL_GOODS_NAMES.add(driver.findElement(By.cssSelector(".inventory_item_name ")).getText());
-        }
+        productsPage.addToCartAllProducts();
+        List<String> allGoodsNamesList = productsPage.getNamesProducts();
         headerPage.clickCartButton();
-        List<WebElement> ALL_GOODS_IN_CART = cartPage.getAllGoodsInShoppingCart();
-        List<String> ALL_GOODS_NAMES_IN_CART = new ArrayList<>();
-        for (WebElement item : ALL_GOODS_IN_CART){
-            ALL_GOODS_NAMES_IN_CART.add(driver.findElement(By.cssSelector(".inventory_item_name")).getText());
-        }
-        Assert.assertTrue(ALL_GOODS_NAMES.containsAll(ALL_GOODS_NAMES_IN_CART));
+        List<String> allGoodsNamesInCart = cartPage.getNamesProductsInShoppingCart();
+        Assert.assertTrue(allGoodsNamesList.containsAll(allGoodsNamesInCart));
     }
 
     @Test(description = "Check that the price is displayed for each added item")
     public void displayPriceOfGoodsTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME, PASSWORD);
-        driver.findElement(By.id("add-to-cart-sauce-labs-onesie")).click();
+        productsPage.addProductToCart(SAUCE_LABS_ONESIE);
         headerPage.clickCartButton();
         Assert.assertTrue(driver.findElement(By.xpath("//*[text()='7.99']")).getText().contains("7.99"));
     }
@@ -102,15 +91,15 @@ public class CartTest extends BaseTest{
     public void checkoutTotalPriceTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME, PASSWORD);
-        driver.findElement(By.id("add-to-cart-sauce-labs-onesie")).click();
-        driver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
-        String PRICE_OF_ONESIE = driver.findElement(By.xpath("//*[text()=\"9.99\"]")).getText();
-        String PRICE_OF_BIKE_LIGHT = driver.findElement(By.xpath("//*[text()=\"7.99\"]")).getText();
-        double priceOfGoods = Double.parseDouble(PRICE_OF_ONESIE.replace("$","")) + Double.parseDouble(PRICE_OF_BIKE_LIGHT.replace("$",""));
+        productsPage.addProductToCart(SAUCE_LABS_ONESIE);
+        productsPage.addProductToCart(SAUCE_LABS_BIKE_LIGHT);
+        String priceOfOnesie = driver.findElement(By.xpath("//*[text()=\"9.99\"]")).getText();
+        String PriceOfBikeLight = driver.findElement(By.xpath("//*[text()=\"7.99\"]")).getText();
+        double priceOfGoods = Double.parseDouble(priceOfOnesie.replace("$","")) + Double.parseDouble(PriceOfBikeLight.replace("$",""));
         headerPage.clickCartButton();
         cartPage.checkoutButton();
-        checkoutPage.checkoutInformation("Serega","Super");
+        checkoutPage.postalInformationCompletion("Serega","Super");
         double itemTotal = Double.parseDouble(driver.findElement(By.xpath("//*[text()=\"17.98\"]")).getText().replace("Item total: $", ""));
-        Assert.assertEquals(priceOfGoods,itemTotal);
+        Assert.assertEquals(priceOfGoods, itemTotal);
     }
 }
