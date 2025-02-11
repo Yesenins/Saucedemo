@@ -17,7 +17,6 @@ public class ProductsPage extends HeaderPage{
     public static final By NAMES_PRODUCTS = By.cssSelector(".inventory_item_name ");
     public static final By PRODUCT = By.cssSelector(".inventory_item");
 
-
     public void addProductToCart(String... productName) {
         for (String productsNames : productName){
             driver.findElement(By.xpath(String.format(ADD_PRODUCT_TO_CART_BUTTON, productsNames))).click();
@@ -52,5 +51,4 @@ public class ProductsPage extends HeaderPage{
     public List<WebElement> getAllProducts(){
         return driver.findElements(PRODUCT);
     }
-
 }

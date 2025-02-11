@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class HeaderPage extends BasePage{
-
     public static final By CART_BUTTON = By.cssSelector(".shopping_cart_link");
     public static final By PRODUCT_QUANTITY_ON_THE_CART_ICON = By.cssSelector(".shopping_cart_badge");
 
