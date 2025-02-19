@@ -3,6 +3,7 @@ package tests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import java.util.List;
 
@@ -22,9 +23,7 @@ public class CartTest extends BaseTest{
         loginPage.login(USERNAME, PASSWORD);
         productsPage.addToCartAllProducts();
         headerPage.clickCartButton();
-        int quantityOfAllGoods = cartPage.getQuantityOfAllGoods();
-        Assert.assertEquals(6, quantityOfAllGoods);
-//        Assert.assertEquals(driver.findElement(By.cssSelector(".shopping_cart_badge")).getText(),String.valueOf(quantityOfAllGoods));
+        Assert.assertEquals(cartPage.getProductQuantity(), 6);
     }
 
     @Test(description = "Check that the cart icon shows the added quantity of goods")
@@ -68,8 +67,7 @@ public class CartTest extends BaseTest{
         productsPage.addToCartAllProducts();
         List<String> allGoodsNamesList = productsPage.getNamesProducts();
         headerPage.clickCartButton();
-        List<String> allGoodsNamesInCart = cartPage.getNamesProductsInShoppingCart();
-        Assert.assertTrue(allGoodsNamesList.containsAll(allGoodsNamesInCart));
+        Assert.assertTrue(allGoodsNamesList.containsAll(cartPage.getNamesProductsInShoppingCart()));
     }
 
     @Test(description = "Check that the price is displayed for each added item")
@@ -78,7 +76,7 @@ public class CartTest extends BaseTest{
         loginPage.login(USERNAME, PASSWORD);
         productsPage.addProductToCart(SAUCE_LABS_ONESIE);
         headerPage.clickCartButton();
-        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='7.99']")).getText().contains("7.99"));
+        Assert.assertEquals(cartPage.getPrice(SAUCE_LABS_ONESIE), 7.99);
     }
 
     @Test(description = "Check that the price without tax matches the total cost of goods")
@@ -92,5 +90,40 @@ public class CartTest extends BaseTest{
         double priceOfGoods = cartPage.getPrice(SAUCE_LABS_ONESIE) + cartPage.getPrice(SAUCE_LABS_BIKE_LIGHT);
         double itemTotal = checkoutPage.getItemTotal();
         Assert.assertEquals(priceOfGoods, itemTotal);
+    }
+
+    @DataProvider(name = "products")
+    public Object[][] productsAndPrices() {
+        return new Object[][]{
+                {SAUCE_LABS_BACKPACK, "$29.99"},
+                {SAUCE_LABS_BOLT_T_SHIRT, "$15.99"},
+                {SAUCE_LABS_BIKE_LIGHT, "$9.99"},
+                {SAUCE_LABS_FLEECE_JACKET, "$49.99"},
+                {SAUCE_LABS_ONESIE, "$7.99"},
+                {TEST_ALL_THE_THINGS_T_SHIRT_RED, "$15.99"},
+        };
+    }
+
+    /**
+     *
+     * @param productName
+     * @param price
+     */
+    @Test(dataProvider = "products" , groups = "products")
+    public void checkProductPriceInCartTest(String productName, String price){
+        loginPage.openPage(LOGIN_PAGE_URL);
+        loginPage.login(USERNAME,PASSWORD);
+        productsPage.addProductToCart(productName);
+        headerPage.clickCartButton();
+        Assert.assertEquals(cartPage.getProductPriceText(productName),price);
+    }
+
+    @Test
+    public void checkQuantityTest(){
+        loginPage.openPage(LOGIN_PAGE_URL);
+        loginPage.login(USERNAME,PASSWORD);
+        productsPage.addProductToCart(SAUCE_LABS_BOLT_T_SHIRT, SAUCE_LABS_ONESIE);
+        headerPage.clickCartButton();
+        Assert.assertEquals(cartPage.getProductQuantity(), 2);
     }
 }
