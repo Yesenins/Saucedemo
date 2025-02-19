@@ -21,5 +21,4 @@ public class HeaderPage extends BasePage{
     public void clickCartButton(){
         driver.findElement(CART_BUTTON).click();
     }
-
 }
