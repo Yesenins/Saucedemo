@@ -4,3 +4,5 @@
 4.the price without tax coincides with the total cost of goods (
 passed)
 5.the item can be removed from the cart (disappears after removal)(passed)
+![Screenshot_4.png](..%2FScreenshot_4.png)
+![Screenshot_5.png](..%2FScreenshot_5.png)
