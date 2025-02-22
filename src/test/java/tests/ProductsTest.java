@@ -12,14 +12,14 @@ public class ProductsTest extends BaseTest {
     //cartPage.getPrice("Product Mane")
     //Assertions
 
-    @Test
+    @Test(description = "check if the add to cart button is displayed")
     public void isAddToCartButtonDisplayedTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME,PASSWORD);
         Assert.assertTrue(productsPage.isAddToCartButtonDisplayed(SAUCE_LABS_BOLT_T_SHIRT));
     }
 
-    @Test
+    @Test(description = "check if the remove from cart button is dis")
     public void isRemoveButtonDisplayedTest(){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(USERNAME,PASSWORD);

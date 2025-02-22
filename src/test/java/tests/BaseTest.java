@@ -2,16 +2,18 @@ package tests;
 
 import constants.IConstants;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import listeners.TestListener;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.ITestListener;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import pages.*;
+import waiters.Waiters;
+
 import java.util.concurrent.TimeUnit;
 
-@Listeners(testng.TestListener.class)
+@Listeners(TestListener.class)
 public class BaseTest implements IConstants, ITestConstants {
     WebDriver driver;
     LoginPage loginPage;
@@ -19,6 +21,8 @@ public class BaseTest implements IConstants, ITestConstants {
     CartPage cartPage;
     HeaderPage headerPage;
     CheckoutPage checkoutPage;
+    LoginPageFactory loginPageFactory;
+    Waiters waiters;
 
     @BeforeMethod
     public void initTest(){
@@ -26,6 +30,7 @@ public class BaseTest implements IConstants, ITestConstants {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        waiters = new Waiters();
         initPages();
     }
 
@@ -48,6 +53,7 @@ public class BaseTest implements IConstants, ITestConstants {
         cartPage = new CartPage(driver);
         headerPage = new HeaderPage(driver);
         checkoutPage = new CheckoutPage(driver);
+        loginPageFactory = new LoginPageFactory(driver);
     }
 
     @AfterMethod
