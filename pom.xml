@@ -18,6 +18,7 @@
         <assertj-core.version>3.27.3</assertj-core.version>
         <webdrivermanager.version>5.9.3</webdrivermanager.version>
         <suiteXmlFile>sauceDemo.xml</suiteXmlFile>
+        <lombok.version>1.18.36</lombok.version>
     </properties>
 
     <build>
@@ -53,7 +54,6 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj-core.version}</version>
-            <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
         <dependency>
@@ -66,7 +66,12 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
             <version>${hamcrest.version}</version>
-            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
 
     </dependencies>
