@@ -3,69 +3,152 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartPage extends HeaderPage{
-    public static final By CHECKOUT_BUTTON = By.id("checkout");
-    public static final By CONTINUE_SHOPPING_BUTTON = By.id("continue-shopping");
-    public static final By NAMES_PRODUCTS_IN_CART = By.cssSelector(".inventory_item_name");
-    public static final By CART_PRODUCT = By.cssSelector(".cart_item");
-    public static final String CART_ITEM = "//*[text()='%s']/ancestor::*[@class='cart_item']";
-    public static final String REMOVE_BUTTON = CART_ITEM + "//button[text()='Remove']";
-    public static final String PRODUCT_PRICE = CART_ITEM + "//*[@data-test='inventory-item-price']";
-    public static final String PRODUCT_QUANTITY = CART_ITEM + "//*[data-test=\"item-quantity\"]";
-    public static final String CART_ITEM_CONTAINER ="//*[@class=\"cart_item\"]";
 
+    @FindBy(id = "checkout")
+    WebElement checkoutButton;
+
+    @FindBy(id = "continue-shopping")
+    WebElement continueShoppingButton;
+
+    @FindBys(@FindBy(css = ".inventory_item_name"))
+    public List<WebElement> namesProductsInCart;
+
+    @FindBys(@FindBy(css = ".cart_item"))
+    public List<WebElement> cartProduct;
+
+    @FindBys(@FindBy(xpath= "//*[@class=\"cart_item\"]"))
+    public List<WebElement> cartItemContainer;
+
+    public static final String CART_ITEM = "//*[text()='%s']/ancestor::*[@class='cart_item']";
+
+    public static final String REMOVE_BUTTON = CART_ITEM + "//button[text()='Remove']";
+
+    public static final String PRODUCT_PRICE = CART_ITEM + "//*[@data-test='inventory-item-price']";
+
+    public static final String PRODUCT_QUANTITY = CART_ITEM + "//*[data-test=\"item-quantity\"]";
+
+    /**
+     * Instantiates a new Cart page.
+     *
+     * @param driver the driver
+     */
     public CartPage(WebDriver driver) {
         super(driver);
     }
 
-    public void openPage(String url){
+    /**
+     * Open cart page cart page.
+     *
+     * @param url the url
+     * @return the cart page
+     */
+    public CartPage openCartPage(String url){
         driver.get(url);
+        return this;
     }
 
+    /**
+     * Get product price text string.
+     *
+     * @param productName the product name
+     * @return the string
+     */
     public String getProductPriceText(String productName){
         return driver.findElement(By.xpath(String.format(PRODUCT_PRICE,productName))).getText();
     }
 
+    /**
+     * Get product quantity integer.
+     *
+     * @return the integer
+     */
     public Integer getProductQuantity(){
-        return driver.findElements(By.xpath(CART_ITEM_CONTAINER)).size();
+        return cartItemContainer.size();
     }
 
+    /**
+     * Get all products in shopping cart list.
+     *
+     * @return the list
+     */
     public List<WebElement> getAllProductsInShoppingCart(){
-        return driver.findElements(CART_PRODUCT);
+        return cartProduct;
     }
 
-    public void removeProductFromCart(String... productNames){
+    /**
+     * Remove product from cart cart page.
+     *
+     * @param productNames the product names
+     * @return the cart page
+     */
+    public CartPage removeProductFromCart(String... productNames){
         for (String productsName : productNames){
             driver.findElement(By.xpath(String.format(REMOVE_BUTTON, productsName))).click();
         }
+        return this;
     }
 
+    /**
+     * Get names products in shopping cart list.
+     *
+     * @return the list
+     */
     public List<String> getNamesProductsInShoppingCart(){
         List<String> list = new ArrayList<>();
-        for (WebElement item : driver.findElements(NAMES_PRODUCTS_IN_CART)){
+        for (WebElement item : namesProductsInCart){
             list.add(item.getText());
         }
         return list;
     }
 
+    /**
+     * Get price double.
+     *
+     * @param productName the product name
+     * @return the double
+     */
     public double getPrice(String productName){
         return Double.parseDouble(driver.findElement(By.xpath(String.format(PRODUCT_PRICE, productName)))
                 .getText()
                 .replace("$",""));
     }
 
-    public void checkoutButton(){
-        driver.findElement(CHECKOUT_BUTTON).click();
+    /**
+     * Checkout button checkout page.
+     *
+     * @return the checkout page
+     */
+    public CheckoutPage checkoutButton(){
+        checkoutButton.click();
+        waiters.waitForPageLoaded();
+        return new CheckoutPage(driver);
     }
 
-    public void continueShoppingButton(){
-        driver.findElement(CONTINUE_SHOPPING_BUTTON).click();
+    /**
+     * Continue shopping button products page.
+     *
+     * @return the products page
+     */
+    public ProductsPage continueShoppingButton(){
+        continueShoppingButton.click();
+        waiters.waitForPageLoaded();
+        return new ProductsPage(driver);
     }
+
+    /**
+     * Is product displayed boolean.
+     *
+     * @param productName the product name
+     * @return the boolean
+     */
     public boolean isProductDisplayed(String productName){
-        return !driver.findElements(By.xpath(String.format(CART_ITEM, productName))).isEmpty();
+        return driver.findElements(By.xpath(String.format(CART_ITEM, productName))).isEmpty();
     }
 }
