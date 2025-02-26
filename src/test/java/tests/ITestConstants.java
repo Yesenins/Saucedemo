@@ -1,7 +1,5 @@
 package tests;
 
-import org.openqa.selenium.By;
-
 public interface ITestConstants {
     String USERNAME = "standard_user";
     String PASSWORD = "secret_sauce";
