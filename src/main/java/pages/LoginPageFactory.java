@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,13 +27,21 @@ public class LoginPageFactory extends BasePage{
     @FindBy(xpath = "//*[@data-test=\"error\"]")
     WebElement errorMessage;
 
-    @Getter
+
     @FindBy(xpath = "//button[contains(.,'Add')]")
     WebElement addButton;
 
-    @Getter
+
     @FindBy(xpath = "//button[contains(.,'Delete')]")
     WebElement deleteButton;
+
+    public WebElement getAddButton() {
+        return addButton;
+    }
+
+    public WebElement getDeleteButton() {
+        return deleteButton;
+    }
 
     public LoginPageFactory(WebDriver driver) {
         super(driver);
