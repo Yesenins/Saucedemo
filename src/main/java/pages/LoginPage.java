@@ -1,6 +1,7 @@
 package pages;
 
-import constants.entity.User;
+import entity.User;
+import lombok.Getter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -8,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+@Getter
 public class LoginPage extends BasePage{
     public static final By USERNAME_INPUT = By.xpath("//*[@data-test='username']");
     public static final By PASSWORD_INPUT = By.xpath("//*[@data-test='password']");
