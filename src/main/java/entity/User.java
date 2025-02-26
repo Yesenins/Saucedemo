@@ -1,4 +1,4 @@
-package constants.entity;
+package entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
-    String password;
-    String username;
-
-    public User() {
-    }
+    private String password;
+    private String username;
 }

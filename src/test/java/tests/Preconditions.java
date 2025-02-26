@@ -1,6 +1,6 @@
 package tests;
 
-import constants.entity.User;
+import entity.User;
 
 public class Preconditions extends BaseTest{
 
