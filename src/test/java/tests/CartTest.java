@@ -3,12 +3,10 @@ package tests;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import pages.CartPage;
 
 import java.util.List;
 
-public class CartTest extends BaseTest{
-
+public class CartTest extends BaseTest {
 
     @Test(description = "Check opening shopping cart")
     public void checkOpeningChoppingCartTest(){
@@ -62,8 +60,8 @@ public class CartTest extends BaseTest{
                 .openPage(LOGIN_PAGE_URL);
         loginPage
                 .login(USERNAME, PASSWORD)
-                .addProductToCart(SAUCE_LABS_ONESIE,SAUCE_LABS_BIKE_LIGHT,SAUCE_LABS_FLEECE_JACKET);
-        productsPage.removeProduct(SAUCE_LABS_BIKE_LIGHT);
+                .addProductToCart(SAUCE_LABS_ONESIE,SAUCE_LABS_BIKE_LIGHT,SAUCE_LABS_FLEECE_JACKET)
+                .removeProduct(SAUCE_LABS_BIKE_LIGHT);
         headerPage.clickCartButton();
         List<String> productsListInCart = cartPage.getNamesProductsInShoppingCart();
         for (String item : productsListInCart){
