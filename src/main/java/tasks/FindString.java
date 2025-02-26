@@ -1,6 +1,5 @@
 package tasks;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FindString {
@@ -15,7 +14,7 @@ public class FindString {
 
     public static void main(String[] args) {
         FindString find = new FindString();
-        List list = List.of("In this world",
+        List<String> list = List.of("In this world",
                 "Is the destiny of mankind",
                 "Controlled by some transcendental entity or law?",
                 "Entity or law?");
