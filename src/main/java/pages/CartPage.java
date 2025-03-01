@@ -1,5 +1,6 @@
 package pages;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.FindBys;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 public class CartPage extends HeaderPage{
 
     @FindBy(id = "checkout")
@@ -50,6 +52,7 @@ public class CartPage extends HeaderPage{
      * @return the cart page
      */
     public CartPage openCartPage(String url){
+        log.info("Open Cart Page Url {}", url);
         driver.get(url);
         return this;
     }
@@ -61,7 +64,9 @@ public class CartPage extends HeaderPage{
      * @return the string
      */
     public String getProductPriceText(String productName){
-        return driver.findElement(By.xpath(String.format(PRODUCT_PRICE,productName))).getText();
+        String priceText = driver.findElement(By.xpath(String.format(PRODUCT_PRICE,productName))).getText();
+        log.info("Get product price: {}", priceText);
+        return priceText;
     }
 
     /**
@@ -69,8 +74,10 @@ public class CartPage extends HeaderPage{
      *
      * @return the integer
      */
-    public Integer getProductQuantity(){
-        return cartItemContainer.size();
+    public int getProductQuantity(){
+        int productQuantity = cartItemContainer.size();
+        log.info("Get product quantity: {}", productQuantity);
+        return productQuantity;
     }
 
     /**
@@ -90,6 +97,7 @@ public class CartPage extends HeaderPage{
      */
     public CartPage removeProductFromCart(String... productNames){
         for (String productsName : productNames){
+            log.info("Remove product {} from cart", productsName);
             driver.findElement(By.xpath(String.format(REMOVE_BUTTON, productsName))).click();
         }
         return this;
@@ -115,9 +123,9 @@ public class CartPage extends HeaderPage{
      * @return the double
      */
     public double getPrice(String productName){
-        return Double.parseDouble(driver.findElement(By.xpath(String.format(PRODUCT_PRICE, productName)))
-                .getText()
-                .replace("$",""));
+        String productPrice = driver.findElement(By.xpath(String.format(PRODUCT_PRICE, productName))).getText();
+        log.info("Get price for product: {}. Price is:{}", productName, productPrice);
+        return Double.parseDouble(productPrice.replace("$",""));
     }
 
     /**
@@ -149,6 +157,6 @@ public class CartPage extends HeaderPage{
      * @return the boolean
      */
     public boolean isProductDisplayed(String productName){
-        return driver.findElements(By.xpath(String.format(CART_ITEM, productName))).isEmpty();
+        return !driver.findElements(By.xpath(String.format(CART_ITEM, productName))).isEmpty();
     }
 }
