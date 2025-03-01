@@ -4,28 +4,28 @@ import entity.User;
 
 public class Preconditions extends BaseTest{
 
-    public static User userWithEmptyName = User.builder()
-            .username("")
-            .password(PASSWORD)
+    protected final User userWithEmptyUserName = User.newBuilder()
+            .setUsername("")
+            .setPassword(PASSWORD)
             .build();
 
-    public static User userWithEmptyPassword = User.builder()
-            .username(USERNAME)
-            .password("")
+    protected final User userWithEmptyPassword = User.newBuilder()
+            .setUsername(USERNAME)
+            .setPassword("")
             .build();
 
-    public static User userWithEmptyFields = User.builder()
-            .username("")
-            .password("")
+    protected final User userWithEmptyFields = User.newBuilder()
+            .setUsername("")
+            .setPassword("")
             .build();
 
-    public static User userWithIncorrectFields = User.builder()
-            .username("asdasd")
-            .password("sgdsfgd")
+    protected final User userWithIncorrectFields = User.newBuilder()
+            .setUsername("asdasd")
+            .setPassword("gdsfg")
             .build();
 
-    public static User userSuccess = User.builder()
-            .username("standard_user")
-            .password("secret_sauce")
+    protected static final User userSuccess = User.newBuilder()
+            .setUsername("standard_user")
+            .setPassword("secret_sauce")
             .build();
 }

@@ -2,6 +2,7 @@ package tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import steps.ProductsSteps;
 
 public class ProductsTest extends BaseTest {
     //loginPage.openPage()
@@ -13,18 +14,13 @@ public class ProductsTest extends BaseTest {
 
     @Test(description = "check if the add to cart button is displayed")
     public void isAddToCartButtonDisplayedTest() {
-        loginPage.openPage(LOGIN_PAGE_URL);
-        loginPage.login(USERNAME,PASSWORD);
-        Assert.assertTrue(productsPage.isAddToCartButtonDisplayed(SAUCE_LABS_BOLT_T_SHIRT));
+        loginSteps.loginAndWaitForPageOpened(Preconditions.userSuccess);
+        productsSteps.checkButtonDisplay("Add",SAUCE_LABS_BOLT_T_SHIRT);
     }
 
     @Test(description = "check if the remove from cart button is dis")
     public void isRemoveButtonDisplayedTest() {
         productsSteps.loginAndAddProductToCart(Preconditions.userSuccess, SAUCE_LABS_BOLT_T_SHIRT);
-
-//        loginPage.openPage(LOGIN_PAGE_URL);
-//        loginPage.login(USERNAME,PASSWORD);
-//        productsPage.addProductToCart(SAUCE_LABS_BOLT_T_SHIRT);
-        Assert.assertTrue(productsPage.isRemoveButtonDisplayed(SAUCE_LABS_BOLT_T_SHIRT));
+        productsSteps.checkButtonDisplay("Remove",SAUCE_LABS_BOLT_T_SHIRT);
     }
 }
