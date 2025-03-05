@@ -18,13 +18,13 @@ public class ProductsSteps extends BaseSteps {
         return this;
     }
 
-    @Step
+    @Step("remove product")
     public ProductsSteps removeProduct(String... productNames) {
         productsPage.removeProduct(productNames);
         return this;
     }
 
-    @Step
+    @Step("check that the button is displayed")
     public ProductsSteps checkButtonDisplay(String nameButton, String nameProduct) {
         if(nameButton.equals("Add")){
             Assert.assertTrue(productsPage.isAddToCartButtonDisplayed(nameProduct));
@@ -36,14 +36,14 @@ public class ProductsSteps extends BaseSteps {
     }
 
     @Step("Login and add product to cart")
-    public ProductsSteps loginAndAddProductToCart(User user,String... productNames) {
+    public ProductsSteps loginAndAddProductToCart(User user, String... productNames) {
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(user);
         productsPage.addProductToCart(productNames);
         return this;
     }
 
-    @Step
+    @Step("Login and add all products to cart")
     public ProductsSteps loginAndAddToCartAllProducts(User user){
         loginPage.openPage(LOGIN_PAGE_URL);
         loginPage.login(user);
@@ -51,4 +51,3 @@ public class ProductsSteps extends BaseSteps {
         return this;
     }
 }
-

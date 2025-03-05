@@ -8,7 +8,7 @@ public class HeaderSteps extends BaseSteps{
         super(driver);
     }
 
-    @Step
+    @Step("click on the shopping cart icon")
     public HeaderSteps goToCart(){
         headerPage.clickCartButton();
         return this;

@@ -1,10 +1,7 @@
 package tests;
 
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 public class CartTest extends BaseTest {
 
@@ -39,8 +36,8 @@ public class CartTest extends BaseTest {
         cartSteps.continueShopping();
         productsSteps.addProductToCart(SAUCE_LABS_BACKPACK,TEST_ALL_THE_THINGS_T_SHIRT_RED);
         headerSteps.goToCart();
-        cartSteps.removeProductFromCart(SAUCE_LABS_FLEECE_JACKET, TEST_ALL_THE_THINGS_T_SHIRT_RED);
-        cartSteps.checkDisplayTheNumberOfGoodsOnCartIcon("1");
+        cartSteps.removeProductFromCart(SAUCE_LABS_FLEECE_JACKET, TEST_ALL_THE_THINGS_T_SHIRT_RED)
+                 .checkDisplayTheNumberOfGoodsOnCartIcon("1");
     }
 
     @Test(description = "Check that the name is displayed for each added item")
@@ -60,15 +57,15 @@ public class CartTest extends BaseTest {
     public void displayPriceOfGoodsTest(){
         productsSteps.loginAndAddProductToCart(Preconditions.userSuccess, SAUCE_LABS_ONESIE);
         headerSteps.goToCart();
-        cartSteps.checkThatThePriceDisplayedForItem(SAUCE_LABS_ONESIE,7.99);
+        cartSteps.checkThatThePriceDisplayedForItem(SAUCE_LABS_ONESIE,7.9);
     }
 
     @Test(description = "Check that the price without tax matches the total cost of goods")
     public void checkoutTotalPriceTest(){
         productsSteps.loginAndAddProductToCart(Preconditions.userSuccess,SAUCE_LABS_ONESIE,SAUCE_LABS_BIKE_LIGHT);
         headerSteps.goToCart();
-        cartSteps.postalInformationCompletion("Serega","Super", "12345");
-        cartSteps.checkThatPriceMatchesTotalPrice();
+        cartSteps.postalInformationCompletion("Serega","Super", "12345")
+                 .checkThatPriceMatchesTotalPrice();
     }
 
     @DataProvider(name = "products")

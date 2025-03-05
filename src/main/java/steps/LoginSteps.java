@@ -1,6 +1,5 @@
 package steps;
 
-
 import constants.IConstants;
 import entity.User;
 import io.qameta.allure.Step;
@@ -28,11 +27,9 @@ public class LoginSteps  extends BaseSteps{
         return this;
     }
 
-    @Step
+    @Step("error message output check")
     public LoginSteps checkErrorMessageOutput(String errorMessage) {
         Assert.assertEquals(loginPage.getErrorMessageText(), errorMessage);
         return this;
     }
-
-
 }

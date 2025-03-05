@@ -1,8 +1,6 @@
 package tests;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
-import steps.ProductsSteps;
 
 public class ProductsTest extends BaseTest {
     //loginPage.openPage()

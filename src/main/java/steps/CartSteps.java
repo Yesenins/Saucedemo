@@ -1,7 +1,6 @@
 package steps;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -13,7 +12,7 @@ public class CartSteps extends BaseSteps {
         super(driver);
     }
 
-    @Step
+    @Step("Checking that a product is not in the cart")
     public CartSteps verifyProductIsNotInCart(String productName){
         List<String> productsListInCart = cartPage.getNamesProductsInShoppingCart();
         for (String item : productsListInCart){
@@ -22,19 +21,19 @@ public class CartSteps extends BaseSteps {
         return this;
     }
 
-    @Step
+    @Step("Checking that the site is open")
     public CartSteps checkSiteOpen(WebDriver driver, String url) {
         Assert.assertEquals(driver.getCurrentUrl(), url);
         return this;
     }
 
-    @Step
+    @Step("Check if the number of items in the cart corresponds to the number of items on the cart icon")
     public CartSteps checkDisplayTheNumberOfGoodsOnCartIcon(String cartQuantity) {
         Assert.assertEquals(headerPage.getTextFromIcon(), cartQuantity);
         return this;
     }
 
-    @Step
+    @Step("Checking that product names are displayed for each added product")
     public CartSteps checkThatTheNameIsDisplayedForEachAddedItem() {
         List<String> allGoodsNamesList = productsPage.getNamesProducts();
         headerPage.clickCartButton();
@@ -42,32 +41,32 @@ public class CartSteps extends BaseSteps {
         return this;
     }
 
-    @Step
+    @Step("Checking that items are displayed in the cart")
     public CartSteps checkThatItemsDisplayedInTheCart(int allQuantityProducts) {
         Assert.assertEquals(cartPage.getProductQuantity(), allQuantityProducts);
         return this;
     }
 
-    @Step
+    @Step("Click on the continue shopping button")
     public CartSteps continueShopping() {
         cartPage.continueShoppingButton();
         return this;
     }
 
-    @Step
+    @Step("Checking the price display for each item")
     public CartSteps checkThatThePriceDisplayedForItem(String productName, double price) {
         Assert.assertEquals(cartPage.getPrice(productName), price);
         return this;
     }
 
-    @Step
+    @Step("entering information into the card for order placement")
     public CartSteps postalInformationCompletion(String firstName, String lastName, String zipCode) {
         cartPage.checkoutButton();
         checkoutPage.postalInformationCompletion(firstName, lastName, zipCode);
         return this;
     }
 
-    @Step
+    @Step("checking that the price corresponds to the final price")
     public CartSteps checkThatPriceMatchesTotalPrice() {
         double priceOfGoods = 0;
         for (WebElement item : checkoutPage.getAllPrice()){
@@ -78,19 +77,19 @@ public class CartSteps extends BaseSteps {
         return this;
     }
 
-    @Step
+    @Step("price matching")
     public CartSteps checkPrice(String productName, String price){
         Assert.assertEquals(cartPage.getProductPriceText(productName),price);
         return this;
     }
 
-    @Step
+    @Step("quantity matching")
     public CartSteps checkQuantity( int expectedQuantity){
         Assert.assertEquals(cartPage.getProductQuantity(), expectedQuantity);
         return this;
     }
 
-    @Step
+    @Step("deleting an item from the cart")
     public CartSteps removeProductFromCart(String... productName){
         headerPage.clickCartButton();
         cartPage.removeProductFromCart(productName);
