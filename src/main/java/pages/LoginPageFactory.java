@@ -1,7 +1,5 @@
 package pages;
 
-import lombok.Getter;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,7 +11,7 @@ import java.time.Duration;
 /**
  * The type Login page factory.
  */
-public class LoginPageFactory extends BasePage{
+public class LoginPageFactory extends BasePage {
 
     @FindBy(xpath = "//*[@data-test='username']")
     WebElement usernameInput;
@@ -53,7 +51,7 @@ public class LoginPageFactory extends BasePage{
      * @param username the username
      * @param password the password
      */
-    public void login(String username, String password){
+    public void login(String username, String password) {
         usernameInput.sendKeys(username);
         passwordInput.sendKeys(password);
         loginButton.click();
@@ -64,7 +62,7 @@ public class LoginPageFactory extends BasePage{
      *
      * @return the string
      */
-    public String getErrorMessageText(){
+    public String getErrorMessageText() {
         return errorMessage.getText();
     }
 
@@ -73,7 +71,7 @@ public class LoginPageFactory extends BasePage{
      *
      * @return the login page factory
      */
-    public LoginPageFactory waitForPageOpened(){
+    public LoginPageFactory waitForPageOpened() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(ExpectedConditions.visibilityOf(loginButton));
         return this;

@@ -1,5 +1,6 @@
 package pages;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.FindBys;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 public class ProductsPage extends HeaderPage{
 
     @FindBys(@FindBy(css = ".inventory_item_name"))
@@ -37,6 +39,7 @@ public class ProductsPage extends HeaderPage{
      */
     public ProductsPage addProductToCart(String... productNames) {
         for (String productsName : productNames){
+            log.info("Add product to cart: {} ", productsName);
             driver.findElement(By.xpath(String.format(ADD_PRODUCT_TO_CART_BUTTON, productsName))).click();
         }
         return this;
@@ -50,6 +53,7 @@ public class ProductsPage extends HeaderPage{
      */
     public ProductsPage removeProduct(String... productNames){
         for (String productsName : productNames){
+            log.info("Remove from cart product: {}", productsName);
             driver.findElement(By.xpath(String.format(REMOVE_PRODUCT_BUTTON, productsName))).click();
         }
         return this;
@@ -78,6 +82,7 @@ public class ProductsPage extends HeaderPage{
         for (WebElement button : allProductsList){
             button.findElement(ADD_TO_CART_BUTTON).click();
         }
+        log.info("add to cart all products");
         return this;
     }
 

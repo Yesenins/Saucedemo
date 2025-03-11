@@ -1,10 +1,16 @@
 package pages;
 
-import org.openqa.selenium.By;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 
+import java.util.List;
+
+@Log4j2
+@Getter
 public class CheckoutPage extends CartPage{
 
     @FindBy(id = "first-name")
@@ -22,6 +28,9 @@ public class CheckoutPage extends CartPage{
     @FindBy(css = ".summary_subtotal_label")
     WebElement itemTotal;
 
+    @FindBys(@FindBy(css = ".inventory_item_price"))
+    List<WebElement> allPrice;
+
     public CheckoutPage(WebDriver driver) {
         super(driver);
     }
@@ -32,8 +41,10 @@ public class CheckoutPage extends CartPage{
      * @return the double
      */
     public double getItemTotal(){
-        return Double.parseDouble(itemTotal.getText()
+        double totalPrice = Double.parseDouble(itemTotal.getText()
                 .replace("Item total: $",""));
+        log.info("Get Item total: {}", totalPrice);
+        return totalPrice;
     }
 
     /**
@@ -42,10 +53,11 @@ public class CheckoutPage extends CartPage{
      * @param firstName the first name
      * @param lastName  the last name
      */
-    public void postalInformationCompletion(String firstName, String lastName){
+    public void postalInformationCompletion(String firstName, String lastName, String code){
         firstNameInput.sendKeys(firstName);
         lastNameInput.sendKeys(lastName);
-        zipCode.sendKeys("12345");
+        zipCode.sendKeys(code);
+        log.info("Form filling: First name {}, Last name {}, ZipCode {}", firstName, lastName, code);
         continueButton.click();
     }
 }

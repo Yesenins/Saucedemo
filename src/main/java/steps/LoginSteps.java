@@ -1,17 +1,14 @@
 package steps;
 
-
 import constants.IConstants;
 import entity.User;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import pages.LoginPage;
+import org.testng.Assert;
 
-public class LoginSteps {
-    private LoginPage loginPage;
-
-    public LoginSteps(WebDriver driver){
-        loginPage = new LoginPage(driver);
+public class LoginSteps  extends BaseSteps{
+    public LoginSteps(WebDriver driver) {
+        super(driver);
     }
 
     @Step("Login and wait for page loaded")
@@ -27,6 +24,12 @@ public class LoginSteps {
         loginPage.openPage(IConstants.LOGIN_PAGE_URL);
         loginPage.waitForPageOpened()
                 .login(user);
+        return this;
+    }
+
+    @Step("error message output check")
+    public LoginSteps checkErrorMessageOutput(String errorMessage) {
+        Assert.assertEquals(loginPage.getErrorMessageText(), errorMessage);
         return this;
     }
 }
